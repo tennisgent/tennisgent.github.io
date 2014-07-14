@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>ng-animate list test</title>
+    <script data-require="angular.js@1.2.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js" data-semver="1.2.19"></script>
+    <script data-require="angular.js@1.2.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.min.js" data-semver="1.2.19"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.0/animate.css">
+
+    <style>
+      .user-list{
+        width: 400px;
+        padding: 10px;
+      }
+      .user{
+        margin-bottom: 10px;
+        border: 1px solid #bbb;
+        color: #555;
+        overflow: hidden;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        background-color: #999;
+      }
+      .user p{
+        margin-top: 0;
+      }
+      .user span:hover{
+        cursor: pointer;
+        color: black;
+      }
+
+      /*.user.ng-enter{
+        -webkit-transition: 
+          0.5s ease-in-out max-height, 
+          0.5s ease-in-out opacity;
+        transition: 
+          0.5s ease-in-out max-height, 
+          0.5s ease-in-out opacity;
+      }
+      .user.ng-leave {
+        -webkit-transition: 
+          0.5s ease-in-out max-height, 
+          0.5s ease-in-out opacity;
+        transition: 
+          0.5s ease-in-out max-height, 
+          0.5s ease-in-out opacity;
+      }
+
+      .user.ng-enter,
+      .user.ng-leave.ng-leave-active {
+        max-height: 0;
+        opacity: 0;
+      }
+      .user.ng-leave,
+      .user.ng-enter.ng-enter-active {
+        max-height: 200px;
+        opacity: 1;
+      }*/
+
+      .user.ng-enter{
+        -webkit-animation: rotateIn 1s;
+        -moz-animation: rotateIn 1s;
+        -ms-animation: rotateIn 1s;
+        animation: rotateIn 1s;
+      }
+      .user.ng-leave {
+        -webkit-animation: rotateOut 1s;
+        -moz-animation: rotateOut 1s;
+        -ms-animation: rotateOut 1s;
+        animation: rotateOut 1s;
+      }
+
+
+    </style>
+
+  </head>
+
+  <body ng-controller="MainCtrl">
+
+  <div class="controls">
+    <input type="text" ng-model="newItem.name" placeholder="Name">
+    <input type="text" ng-model="newItem.age" placeholder="Age">
+    <input type="text" ng-model="newItem.height" placeholder="Height">
+    <input type="text" ng-model="newItem.weight" placeholder="Weight">
+    <br>
+    <button ng-click="addItem(newItem)">Add Item</button>
+    <button ng-click="newItem = getNewItem()">Auto Fill</button>
+  </div>
+    
+    <div class="user-list">
+      <div class="user" ng-repeat="user in list | orderBy:'name' track by user.id">
+        <span style="float:right" ng-click="removeItem(user.id)"> {{$index}} </span>
+        <p>{{user.name}}</p>
+        <p>Age: {{user.age}}</p>
+        <p>Height: {{user.height}}</p>
+        <p>Weight: {{user.weight}}</p>
+      </div>
+    </div>
+
+
+    <script>
+      var app = angular.module('plunker', ['ngAnimate']);
+
+      app.controller('MainCtrl', function($scope, $interval) {
+        var id = Date.now();
+        $scope.list = [
+          {name:'Bob Jones', age: 23, height: 75, weight: 180, id: id++},
+          {name:'Sarah Conner', age: 34, height: 72, weight: 165, id: id++},
+          {name:'Ryan Neilson', age: 68, height: 63, weight: 180, id: id++},
+          {name:'Matthew Jones', age: 12, height: 64, weight: 222, id: id++},
+          {name:'Bill Cosby', age: 26, height: 65, weight: 310, id: id++},
+          {name:'Rachel Hamilton', age: 63, height: 68, weight: 287, id: id++}
+        ];
+
+        $scope.addItem = function(user){
+          $scope.list.unshift(user);
+        };
+
+        $scope.removeItem = function(id){
+          for(var i=0; i<$scope.list.length; i++){
+            if($scope.list[i].id === id){
+              $scope.list.splice(i, 1);
+              console.log('removed', i);
+              break;
+            }
+          }
+        };
+
+        $scope.getNewItem = function(){
+          var newItem = angular.copy($scope.list[Math.floor(Math.random()*$scope.list.length)]);
+          newItem.id = id++;
+          return newItem;
+        };
+
+        $interval(function(){
+          $scope.addItem($scope.getNewItem());
+        }, 2000);
+
+        $interval(function(){
+          var item = $scope.list[Math.floor(Math.random()*$scope.list.length)];
+          $scope.removeItem(item.id);
+        }, 2250);
+      });
+
+
+    </script>
+    
+  </body>
+
+</html>
