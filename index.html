@@ -1,152 +1,352 @@
 <!DOCTYPE html>
-<html ng-app="plunker">
+<html ng-app="plunker" ng-controller="MainCtrl">
 
-  <head>
-    <meta charset="utf-8" />
+<head>
+    <meta charset="utf-8"/>
     <title>ng-animate list test</title>
-    <script data-require="angular.js@1.2.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js" data-semver="1.2.19"></script>
-    <script data-require="angular.js@1.2.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.min.js" data-semver="1.2.19"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-animate.min.js"></script>
 
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.0/animate.css">
 
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script>
+
     <style>
-      .user-list{
-        width: 400px;
-        padding: 10px;
-      }
-      .user{
-        margin-bottom: 10px;
-        border: 1px solid #bbb;
-        color: #555;
-        overflow: hidden;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        background-color: #999;
-      }
-      .user p{
-        margin-top: 0;
-      }
-      .user span:hover{
-        cursor: pointer;
-        color: black;
-      }
+        body,
+        body *{
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+        .item-list {
+            width: 400px;
+            padding: 10px;
+        }
 
-      /*.user.ng-enter{
-        -webkit-transition: 
-          0.5s ease-in-out max-height, 
-          0.5s ease-in-out opacity;
-        transition: 
-          0.5s ease-in-out max-height, 
-          0.5s ease-in-out opacity;
-      }
-      .user.ng-leave {
-        -webkit-transition: 
-          0.5s ease-in-out max-height, 
-          0.5s ease-in-out opacity;
-        transition: 
-          0.5s ease-in-out max-height, 
-          0.5s ease-in-out opacity;
-      }
+        .item {
+            color: #555;
+            overflow: hidden;
+            background-color: #999;
+            padding: 10px;
+        }
 
-      .user.ng-enter,
-      .user.ng-leave.ng-leave-active {
-        max-height: 0;
-        opacity: 0;
-      }
-      .user.ng-leave,
-      .user.ng-enter.ng-enter-active {
-        max-height: 200px;
-        opacity: 1;
-      }*/
+        .item-list .slide.ng-enter{
+          -webkit-transition:
+            0.5s ease-in-out max-height,
+            0.5s ease-in-out opacity;
+          transition:
+            0.5s ease-in-out max-height,
+            0.5s ease-in-out opacity;
+        }
+        .item-list .slide.ng-leave {
+          -webkit-transition:
+            0.5s ease-in-out max-height,
+            0.5s ease-in-out opacity;
+          transition:
+            0.5s ease-in-out max-height,
+            0.5s ease-in-out opacity;
+        }
 
-      .user.ng-enter{
-        -webkit-animation: rotateIn 1s;
-        -moz-animation: rotateIn 1s;
-        -ms-animation: rotateIn 1s;
-        animation: rotateIn 1s;
-      }
-      .user.ng-leave {
-        -webkit-animation: rotateOut 1s;
-        -moz-animation: rotateOut 1s;
-        -ms-animation: rotateOut 1s;
-        animation: rotateOut 1s;
-      }
+        .item-list .slide.ng-enter,
+        .item-list .slide.ng-leave.ng-leave-active {
+          max-height: 0;
+          opacity: 0;
+        }
+        .item-list .slide.ng-leave,
+        .item-list .slide.ng-enter.ng-enter-active {
+          max-height: 200px;
+          opacity: 1;
+            margin: 0;
+        }
+
+        .item-list .slide.ng-leave.ng-leave-active {
+            display: none;
+        }
+
+        .col1,
+        .col2{
+            display: inline-block;
+            width: 49%;
+            vertical-align: top;
+        }
+
+        .item-list .duration-250ms{
+            -webkit-animation-duration: 250ms;
+            -ms-animation-duration: 250ms;
+            -moz-animation-duration: 250ms;
+            animation-duration: 250ms;
+        }
+
+        .item-list .duration-500ms{
+            -webkit-animation-duration: 500ms;
+            -ms-animation-duration: 500ms;
+            -moz-animation-duration: 500ms;
+            animation-duration: 500ms;
+        }
+
+        .item-list .duration-750ms{
+            -webkit-animation-duration: 750ms;
+            -ms-animation-duration: 750ms;
+            -moz-animation-duration: 750ms;
+            animation-duration: 750ms;
+        }
+
+        .item-list .duration-1000ms{
+            -webkit-animation-duration: 1000ms;
+            -ms-animation-duration: 1000ms;
+            -moz-animation-duration: 1000ms;
+            animation-duration: 1000ms;
+        }
+
+        .item-list .duration-1500ms{
+            -webkit-animation-duration: 1500ms;
+            -ms-animation-duration: 1500ms;
+            -moz-animation-duration: 1500ms;
+            animation-duration: 1500ms;
+        }
+
+        .item-list .duration-2000ms{
+            -webkit-animation-duration: 2000ms;
+            -ms-animation-duration: 2000ms;
+            -moz-animation-duration: 2000ms;
+            animation-duration: 2000ms;
+        }
+
+        .item-list .ng-enter.rotate {
+            -webkit-animation-name: rotateIn;
+            -moz-animation-name: rotateIn;
+            -ms-animation-name: rotateIn;
+            animation-name: rotateIn;
+        }
+        .item-list .ng-leave.rotate {
+            -webkit-animation-name: rotateOut;
+            -moz-animation-name: rotateOut;
+            -ms-animation-name: rotateOut;
+            animation-name: rotateOut;
+        }
+
+        .item-list .ng-enter.bounce {
+            -webkit-animation-name: bounceIn;
+            -moz-animation-name: bounceIn;
+            -ms-animation-name: bounceIn;
+            animation-name: bounceIn;
+        }
+        .item-list .ng-leave.bounce {
+            -webkit-animation-name: bounceOut;
+            -moz-animation-name: bounceOut;
+            -ms-animation-name: bounceOut;
+            animation-name: bounceOut;
+        }
+
+        .item-list .ng-enter.fade {
+            -webkit-animation-name: fadeIn;
+            -moz-animation-name: fadeIn;
+            -ms-animation-name: fadeIn;
+            animation-name: fadeIn;
+        }
+        .item-list .ng-leave.fade {
+            -webkit-animation-name: fadeOut;
+            -moz-animation-name: fadeOut;
+            -ms-animation-name: fadeOut;
+            animation-name: fadeOut;
+        }
 
 
     </style>
 
-  </head>
+</head>
 
-  <body ng-controller="MainCtrl">
+<body>
 
-  <div class="controls">
-    <input type="text" ng-model="newItem.name" placeholder="Name">
-    <input type="text" ng-model="newItem.age" placeholder="Age">
-    <input type="text" ng-model="newItem.height" placeholder="Height">
-    <input type="text" ng-model="newItem.weight" placeholder="Weight">
-    <br>
-    <button ng-click="addItem(newItem)">Add Item</button>
-    <button ng-click="newItem = getNewItem()">Auto Fill</button>
-  </div>
-    
-    <div class="user-list">
-      <div class="user" ng-repeat="user in list | orderBy:'name' track by user.id">
-        <span style="float:right" ng-click="removeItem(user.id)"> {{$index}} </span>
-        <p>{{user.name}}</p>
-        <p>Age: {{user.age}}</p>
-        <p>Height: {{user.height}}</p>
-        <p>Weight: {{user.weight}}</p>
-      </div>
+
+
+
+
+    <div class="col1">
+        <div class="controls">
+            Animation: <select ng-options="label as label for (label,ani) in animations" ng-model="animation"></select><br>
+            Duration: <select ng-options="dur as label for (label,dur) in durations" ng-model="duration"></select><br>
+            Update Interval: <select ng-options="inter as label for (label,inter) in intervals" ng-model="interval"></select><br>
+            <br>
+            <button ng-click="pause()">Pause</button>
+            <button ng-click="play()">Play</button>
+        </div>
+        <pre snippet><code>
+.component.{{animation}}.ng-enter{
+    -webkit-animation: {{animations[animation][0]}} {{duration}};
+    -moz-animation: {{animations[animation][0]}} {{duration}};
+    -ms-animation-name: {{animations[animation][0]}} {{duration}};
+    animation-name: {{animations[animation][0]}} {{duration}};
+}
+.component.{{animation}}.ng-leave{
+    -webkit-animation: {{animations[animation][1]}} {{duration}};
+    -moz-animation: {{animations[animation][1]}} {{duration}};
+    -ms-animation-name: {{animations[animation][1]}} {{duration}};
+    animation-name: {{animations[animation][1]}} {{duration}};
+}
+        </code></pre>
+        <pre>DOM Node Count: {{domNodeCount}}</pre>
+        <pre snippet><code>{{list | json}}</code></pre>
+    </div>
+    <div class="col2">
+        <div class="item-list">
+            <div class="item {{animation}} duration-{{duration}}" ng-repeat="item in list | orderBy:'id'">
+                <span style="float:right"> {{$index}} </span>
+                {{item.id}}
+            </div>
+        </div>
     </div>
 
 
+
     <script>
-      var app = angular.module('plunker', ['ngAnimate']);
+        var app = angular.module('plunker', ['ngAnimate']);
 
-      app.controller('MainCtrl', function($scope, $interval) {
-        var id = Date.now();
-        $scope.list = [
-          {name:'Bob Jones', age: 23, height: 75, weight: 180, id: id++},
-          {name:'Sarah Conner', age: 34, height: 72, weight: 165, id: id++},
-          {name:'Ryan Neilson', age: 68, height: 63, weight: 180, id: id++},
-          {name:'Matthew Jones', age: 12, height: 64, weight: 222, id: id++},
-          {name:'Bill Cosby', age: 26, height: 65, weight: 310, id: id++},
-          {name:'Rachel Hamilton', age: 63, height: 68, weight: 287, id: id++}
-        ];
+        app.controller('MainCtrl', function ($scope, $timeout, $interval) {
 
-        $scope.addItem = function(user){
-          $scope.list.unshift(user);
-        };
+            $scope.getNewItem = function () {
+                return {id: $scope.getRandomNumber(50, 1000000)};
+            };
 
-        $scope.removeItem = function(id){
-          for(var i=0; i<$scope.list.length; i++){
-            if($scope.list[i].id === id){
-              $scope.list.splice(i, 1);
-              console.log('removed', i);
-              break;
+            $scope.getRandomNumber = function(min, max){
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            };
+
+            $scope.list = [
+                $scope.getNewItem(),
+                $scope.getNewItem(),
+                $scope.getNewItem(),
+                $scope.getNewItem(),
+                $scope.getNewItem()
+            ];
+
+            $scope.addItem = function (item) {
+                $scope.list.push(item);
+            };
+
+            $scope.removeItem = function (id) {
+                for (var i = 0; i < $scope.list.length; i++) {
+                    if($scope.list[i].id === id){
+                        $scope.list.splice(i, 1);
+                        break;
+                    }
+                }
+            };
+
+            $scope.animations = {
+                'bounce': ['bounceIn','bounceOut'],
+                'rotate': ['rotateIn','rotateOut'],
+                'fade': ['fadeIn','fadeOut'],
+                'slide': ['slideIn','slideOut']
+            };
+
+            $scope.durations = {
+                '0.25s': '250ms',
+                '0.5s': '500ms',
+                '0.75s': '750ms',
+                '1s': '1000ms',
+                '1.5s': '1500ms',
+                '2s': '2000ms'
+            };
+
+            $scope.intervals = {
+                '0.25s': 250,
+                '0.5s': 500,
+                '0.75s': 750,
+                '1s': 1000,
+                '1.5s': 1500,
+                '2s': 2000,
+                '3s': 3000,
+                '4s': 4000,
+                '5s': 5000
+            };
+
+            var addLoopInterval = null, removeLoopInterval = null;
+
+            function addLoop(){
+                $scope.addItem($scope.getNewItem());
+                addLoopInterval = $timeout(addLoop, $scope.interval);
+                $scope.domNodeCount = document.querySelectorAll('.item').length;
             }
-          }
-        };
 
-        $scope.getNewItem = function(){
-          var newItem = angular.copy($scope.list[Math.floor(Math.random()*$scope.list.length)]);
-          newItem.id = id++;
-          return newItem;
-        };
+            function removeLoop(){
+                var item = $scope.list[Math.floor(Math.random() * $scope.list.length)];
+                $scope.removeItem(item.id);
+                removeLoopInterval = $timeout(removeLoop, $scope.interval);
+//                $scope.cleanUp();
+            }
 
-        $interval(function(){
-          $scope.addItem($scope.getNewItem());
-        }, 2000);
+            function startIntervals(){
+                addLoopInterval = $timeout(function () {
+                    addLoop();
+                }, $scope.interval);
 
-        $interval(function(){
-          var item = $scope.list[Math.floor(Math.random()*$scope.list.length)];
-          $scope.removeItem(item.id);
-        }, 2250);
-      });
+                removeLoopInterval = $timeout(function () {
+                    removeLoop();
+                }, $scope.interval * 1.5);
+            }
+
+            function stopIntervals(){
+                if(addLoopInterval) $timeout.cancel(addLoopInterval);
+                if(removeLoopInterval) $timeout.cancel(removeLoopInterval);
+            }
+
+            $scope.pause = function(){
+                stopIntervals();
+            };
+
+            $scope.play = function(){
+                stopIntervals();
+                startIntervals();
+            };
+
+            $scope.cleanUp = function(){
+                var nodes = document.querySelectorAll('.item.ng-leave.ng-leave-active');
+                angular.forEach(nodes, function(node){
+                    node.parentNode.removeChild(node);
+                });
+            };
+
+            $scope.$watch('interval', $scope.play);
+            $scope.$watch('duration', $scope.play);
+            $scope.$watch('animation', $scope.play);
+
+            $scope.animation = 'slide';
+            $scope.duration = $scope.durations['1s'];
+            $scope.interval = 2000;
+
+//            $interval(function(){
+//                $scope.addItem($scope.getNewItem());
+//            }, 2000);
+//
+//            $timeout(function(){
+//                $interval(function(){
+//                    var item = $scope.list[$scope.getRandomNumber(0, $scope.list.length-1)];
+//                    $scope.removeItem(item.id);
+//                }, 2000);
+//            }, 1000);
+
+        });
+
+        app.directive('snippet', ['$timeout', '$interpolate', function($timeout, $interpolate) {
+            return {
+                restrict: 'E',
+                template:'<pre><code ng-transclude></code></pre>',
+                replace:true,
+                transclude:true,
+                link:function(scope, elm, attrs){
+                    var tmp =  $interpolate(elm.find('code').text())(scope);
+                    $timeout(function() {
+                        elm.find('code').html(hljs.highlightAuto(tmp).value);
+                    }, 0);
+                }
+            };
+        }]);
 
 
     </script>
-    
-  </body>
+
+</body>
 
 </html>
